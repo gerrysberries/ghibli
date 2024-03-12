@@ -1,35 +1,79 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+
+import './App.css';
+import Header from './components/Header/Header';
+import Cards from './components/Cards/Cards';
 
 function App() {
-  const [count, setCount] = useState(0)
+	const [score, setScore] = React.useState(0);
+	const [bestScore, setBestScore] = React.useState(0);
+	const [clickedMovies, setClickedMovies] = React.useState([]);
+	const [movies, setMovies] = React.useState([]);
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+	function onClickMovie(id): void {
+		shuffleMovies();
+
+		checkIfClicked(id);
+	}
+
+	function shuffleMovies(): void {
+		const shuffledMovies = [...movies];
+
+		for (let i = shuffledMovies.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[shuffledMovies[i], shuffledMovies[j]] = [shuffledMovies[j], shuffledMovies[i]];
+		}
+
+		setMovies(shuffledMovies);
+	}
+
+	function checkIfClicked(id) {
+		if (!clickedMovies.includes(id)) {
+			setScore(score + 1);
+			setClickedMovies([...clickedMovies, id]);
+
+			if (score + 1 > bestScore) setBestScore(score + 1);
+		} else {
+			setScore(0);
+			setClickedMovies([]);
+		}
+	}
+
+	React.useEffect(() => {
+		fetch('https://ghibliapi.vercel.app/films', {
+			headers: {
+				Authorization: 'Bearer YOUR_API_KEY',
+			},
+		})
+			.then(response => response.json())
+			.then(data => setMovies(data))
+			.catch(error => console.error('Error fetching data:', error));
+	}, []);
+
+	// console.log(movies);
+	console.log(clickedMovies);
+
+	return (
+		<>
+			<Header
+				score={score}
+				bestScore={bestScore}
+			/>
+			<button
+				onClick={() => {
+					setScore(0);
+					setBestScore(0);
+					setClickedMovies([]);
+				}}
+			>
+				Restart Game
+			</button>
+			<Cards
+				movies={movies}
+				onClickMovie={onClickMovie}
+			/>
+		</>
+	);
 }
 
-export default App
+export default App;

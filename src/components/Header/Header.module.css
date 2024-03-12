@@ -1,0 +1,12 @@
+.header {
+	display: flex;
+	justify-content: space-between;
+}
+
+.title {
+	color: red;
+}
+
+.score {
+	text-align: left;
+}
