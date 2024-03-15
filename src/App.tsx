@@ -1,16 +1,17 @@
 import React from 'react';
 
-import './App.css';
 import Header from './components/Header/Header';
 import Cards from './components/Cards/Cards';
+import Modal from './components/Modal/Modal';
 
 function App() {
 	const [score, setScore] = React.useState(0);
 	const [bestScore, setBestScore] = React.useState(0);
 	const [clickedMovies, setClickedMovies] = React.useState([]);
 	const [movies, setMovies] = React.useState([]);
+	const [modalVisible, setModalVisible] = React.useState(false);
 
-	function onClickMovie(id): void {
+	function onClickMovie(id: string): void {
 		shuffleMovies();
 
 		checkIfClicked(id);
@@ -27,7 +28,7 @@ function App() {
 		setMovies(shuffledMovies);
 	}
 
-	function checkIfClicked(id) {
+	function checkIfClicked(id: string) {
 		if (!clickedMovies.includes(id)) {
 			setScore(score + 1);
 			setClickedMovies([...clickedMovies, id]);
@@ -37,6 +38,10 @@ function App() {
 			setScore(0);
 			setClickedMovies([]);
 		}
+	}
+
+	function toggleModal() {
+		setModalVisible(currentVisible => !currentVisible);
 	}
 
 	React.useEffect(() => {
@@ -55,10 +60,12 @@ function App() {
 
 	return (
 		<>
+			{modalVisible && <Modal toggleModal={toggleModal} />}
 			<Header
 				score={score}
 				bestScore={bestScore}
 			/>
+			<button onClick={toggleModal}>How to play</button>
 			<button
 				onClick={() => {
 					setScore(0);

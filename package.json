@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-focus-lock": "^2.11.2",
+    "react-remove-scroll": "^2.5.7"
   },
   "devDependencies": {
     "@types/react": "^18.2.64",
