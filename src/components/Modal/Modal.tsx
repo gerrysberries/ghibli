@@ -8,14 +8,28 @@ const Modal = ({toggleModal}) => {
 	return (
 		<RemoveScroll>
 			<FocusLock returnFocus={true}>
-				<div className={styles.backdrop}>
-					<div className={styles.modal}>
-						<div>
-							<a href="#">test</a>
-							<a href="#">test</a>
-							<a href="#">test</a>
+				<div className={styles.wrapper}>
+					<div
+						className={styles.backdrop}
+						onClick={toggleModal}
+					>
+						<div
+							className={styles.modal}
+							onClick={e => e.stopPropagation()}
+						>
+							<div>
+								<p>
+									<strong>How to Play</strong>: Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sequi dignissimos recusandae velit atque sit ut temporibus suscipit error sed, repellendus commodi quam. Dolores accusamus ratione fugit qui, possimus sint quae.
+								</p>
+								<p>
+									<strong>Choose your difficulty:</strong>
+								</p>
+								<button>Easy</button>
+								<button>Moderate</button>
+								<button>Hard</button>
+							</div>
+							<button onClick={toggleModal}>Close Modal</button>
 						</div>
-						<button onClick={toggleModal}>Close Modal</button>
 					</div>
 				</div>
 			</FocusLock>
