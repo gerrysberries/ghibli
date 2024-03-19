@@ -13,6 +13,7 @@ const Cards = ({movies, onClickMovie}) => {
 		<ul className={styles.cardList}>
 			{movies.map(movie => (
 				<Card
+					key={movie.id}
 					movie={movie}
 					onClickMovie={onClickMovie}
 				/>
@@ -20,5 +21,7 @@ const Cards = ({movies, onClickMovie}) => {
 		</ul>
 	);
 };
+
+console.log('cards rendered');
 
 export default Cards;

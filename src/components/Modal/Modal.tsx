@@ -4,7 +4,7 @@ import {RemoveScroll} from 'react-remove-scroll';
 
 import styles from './Modal.module.css';
 
-const Modal = ({toggleModal}) => {
+const Modal = ({toggleModal, changeDifficulty}) => {
 	return (
 		<RemoveScroll>
 			<FocusLock returnFocus={true}>
@@ -24,9 +24,9 @@ const Modal = ({toggleModal}) => {
 								<p>
 									<strong>Choose your difficulty:</strong>
 								</p>
-								<button>Easy</button>
-								<button>Moderate</button>
-								<button>Hard</button>
+								<button onClick={changeDifficulty}>Easy</button>
+								<button onClick={changeDifficulty}>Moderate</button>
+								<button onClick={changeDifficulty}>Hard</button>
 							</div>
 							<button onClick={toggleModal}>Close Modal</button>
 						</div>
