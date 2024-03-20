@@ -1,21 +1,34 @@
-import React from 'react';
+const GameOver = ({gameStatus, score, restartGame}: {gameStatus: string; score: number}) => {
+	return gameStatus === 'won' ? (
+		<Win
+			score={score}
+			restartGame={restartGame}
+		/>
+	) : (
+		<Loss
+			score={score}
+			restartGame={restartGame}
+		/>
+	);
+};
 
-const GameOver = ({changeDifficulty, toggleModal}) => {
+const Win = ({score, restartGame}) => {
 	return (
-		<>
-			<div onClick={changeDifficulty}>
-				<p>
-					<strong>How to Play</strong>: Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sequi dignissimos recusandae velit atque sit ut temporibus suscipit error sed, repellendus commodi quam. Dolores accusamus ratione fugit qui, possimus sint quae.
-				</p>
-				<p>
-					<strong>Choose your difficulty:</strong>
-				</p>
-				<button>Easy</button>
-				<button>Moderate</button>
-				<button>Hard</button>
-			</div>
-			<button onClick={toggleModal}>Close Modal</button>
-		</>
+		<div>
+			<p>Congratulations, you win!</p>
+			<p>Score: {score}</p>
+			<button onClick={restartGame}>Restart Game</button>
+		</div>
+	);
+};
+
+const Loss = ({score, restartGame}) => {
+	return (
+		<div>
+			<p>Sorry, you lose!</p>
+			<p>Score: {score}</p>
+			<button onClick={restartGame}>Restart Game</button>
+		</div>
 	);
 };
 

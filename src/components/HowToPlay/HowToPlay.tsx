@@ -1,4 +1,4 @@
-const HowToPlay = ({changeDifficulty, toggleModal}) => {
+const HowToPlay = ({changeDifficulty, toggle}) => {
 	return (
 		<>
 			<div onClick={changeDifficulty}>
@@ -12,7 +12,7 @@ const HowToPlay = ({changeDifficulty, toggleModal}) => {
 				<button>Moderate</button>
 				<button>Hard</button>
 			</div>
-			<button onClick={toggleModal}>Close Modal</button>
+			<button onClick={toggle}>Close Modal</button>
 		</>
 	);
 };

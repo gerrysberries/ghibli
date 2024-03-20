@@ -1,5 +1,7 @@
 import React from 'react';
 
+import useToggle from './Hooks/useToggle';
+
 import Header from './components/Header/Header';
 import Cards from './components/Cards/Cards';
 import Modal from './components/Modal/Modal';
@@ -14,8 +16,10 @@ function App() {
 	const [allMovies, setAllMovies] = React.useState([]);
 	const [visibleMovies, setVisibleMovies] = React.useState([]);
 	const [clickedMovies, setClickedMovies] = React.useState([]);
-	const [modalVisible, setModalVisible] = React.useState(true);
-	const [isGameOver, setIsGameOver] = React.useState(false);
+	const [gameStatus, setGameStatus] = React.useState('running');
+
+	const [showInstructions, toggleInstructions] = useToggle(true);
+	const [showGameOver, toggleGameOver] = useToggle(false);
 
 	React.useEffect(() => {
 		async function fetchMovies() {
@@ -51,7 +55,7 @@ function App() {
 		}
 
 		setVisibleMovies(nextMovies);
-		setModalVisible(curVisible => !curVisible);
+		toggleInstructions();
 	}
 
 	function getNewMovies() {
@@ -64,7 +68,7 @@ function App() {
 	function onClickMovie(id: string): void {
 		setVisibleMovies(shuffleMovies(visibleMovies));
 
-		checkIfClicked(id);
+		handleClickCard(id);
 	}
 
 	function shuffleMovies(movies) {
@@ -78,55 +82,56 @@ function App() {
 		return shuffledMovies;
 	}
 
-	function checkIfClicked(id: string) {
+	function handleClickCard(id: string) {
 		if (!clickedMovies.includes(id)) {
 			const nextScore = score + 1;
 			setScore(nextScore);
+			if (nextScore === visibleMovies.length) {
+				setGameStatus('won');
+				toggleGameOver();
+			}
+
 			setClickedMovies([...clickedMovies, id]);
-
-			if (nextScore === visibleMovies.length) alert('WINNER');
-
-			if (nextScore > bestScore) setBestScore(nextScore);
 		} else {
-			setScore(0);
-			setClickedMovies([]);
+			setGameStatus('lose');
+			toggleGameOver();
 		}
 	}
 
-	function toggleModal() {
-		setModalVisible(currentVisible => !currentVisible);
+	function restartGame() {
+		if (score > bestScore) setBestScore(score);
+
+		showGameOver && toggleGameOver();
+		setClickedMovies([]);
+		setScore(0);
 	}
 
 	return (
 		<Wrapper>
-			{modalVisible && (
-				<Modal>
+			{showInstructions && (
+				<Modal toggle={toggleInstructions}>
 					<HowToPlay
 						changeDifficulty={changeDifficulty}
-						toggleModal={toggleModal}
+						toggle={toggleInstructions}
 					/>
 				</Modal>
 			)}
-			{isGameOver && (
-				<Modal>
-					<GameOver />
+			{showGameOver && (
+				<Modal toggle={restartGame}>
+					<GameOver
+						gameStatus={gameStatus}
+						score={score}
+						restartGame={restartGame}
+					/>
 				</Modal>
 			)}
 			<Header
 				score={score}
 				bestScore={bestScore}
 			/>
-			<button onClick={toggleModal}>How to play</button>
-			<button
-				onClick={() => {
-					setScore(0);
-					setBestScore(0);
-					setClickedMovies([]);
-					getNewMovies();
-				}}
-			>
-				Restart Game
-			</button>
+			<button onClick={toggleInstructions}>How to play</button>
+			<button onClick={restartGame}>Restart Game</button>
+			<button onClick={() => setBestScore(0)}>Reset High Score</button>
 			{difficulty && (
 				<Cards
 					movies={visibleMovies}

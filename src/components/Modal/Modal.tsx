@@ -3,14 +3,14 @@ import {RemoveScroll} from 'react-remove-scroll';
 
 import styles from './Modal.module.css';
 
-const Modal = ({toggleModal, changeDifficulty, children}) => {
+const Modal = ({toggle, children}) => {
 	return (
 		<RemoveScroll>
 			<FocusLock returnFocus={true}>
 				<div className={styles.wrapper}>
 					<div
 						className={styles.backdrop}
-						onClick={toggleModal}
+						onClick={toggle}
 					>
 						<div
 							className={styles.modal}
