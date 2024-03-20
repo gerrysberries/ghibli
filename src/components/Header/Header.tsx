@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './Header.module.css';
 
 const Header = ({score, bestScore}: {score: number; bestScore: number}) => {

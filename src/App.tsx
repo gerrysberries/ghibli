@@ -3,15 +3,37 @@ import React from 'react';
 import Header from './components/Header/Header';
 import Cards from './components/Cards/Cards';
 import Modal from './components/Modal/Modal';
+import Wrapper from './components/Wrapper/Wrapper';
+import HowToPlay from './components/HowToPlay/HowToPlay';
+import GameOver from './components/GameOver/GameOver';
 
 function App() {
 	const [score, setScore] = React.useState(0);
 	const [bestScore, setBestScore] = React.useState(0);
+	const [difficulty, setDifficulty] = React.useState('Easy');
 	const [allMovies, setAllMovies] = React.useState([]);
 	const [visibleMovies, setVisibleMovies] = React.useState([]);
 	const [clickedMovies, setClickedMovies] = React.useState([]);
 	const [modalVisible, setModalVisible] = React.useState(true);
-	const [difficulty, setDifficulty] = React.useState(undefined);
+	const [isGameOver, setIsGameOver] = React.useState(false);
+
+	React.useEffect(() => {
+		async function fetchMovies() {
+			try {
+				const response = await fetch('https://ghibliapi.vercel.app/films', {
+					headers: {
+						Authorization: 'Bearer YOUR_API_KEY',
+					},
+				});
+				const data = await response.json();
+				setAllMovies(data);
+			} catch (error) {
+				console.error('Error fetching data:', error);
+			}
+		}
+
+		fetchMovies();
+	}, []);
 
 	function changeDifficulty(e): void {
 		if (e.target.tagName !== 'BUTTON') return;
@@ -58,10 +80,13 @@ function App() {
 
 	function checkIfClicked(id: string) {
 		if (!clickedMovies.includes(id)) {
-			setScore(score + 1);
+			const nextScore = score + 1;
+			setScore(nextScore);
 			setClickedMovies([...clickedMovies, id]);
 
-			if (score + 1 > bestScore) setBestScore(score + 1);
+			if (nextScore === visibleMovies.length) alert('WINNER');
+
+			if (nextScore > bestScore) setBestScore(nextScore);
 		} else {
 			setScore(0);
 			setClickedMovies([]);
@@ -72,31 +97,20 @@ function App() {
 		setModalVisible(currentVisible => !currentVisible);
 	}
 
-	React.useEffect(() => {
-		async function fetchMovies() {
-			try {
-				const response = await fetch('https://ghibliapi.vercel.app/films', {
-					headers: {
-						Authorization: 'Bearer YOUR_API_KEY',
-					},
-				});
-				const data = await response.json();
-				setAllMovies(data);
-			} catch (error) {
-				console.error('Error fetching data:', error);
-			}
-		}
-
-		fetchMovies();
-	}, []);
-
 	return (
-		<>
+		<Wrapper>
 			{modalVisible && (
-				<Modal
-					toggleModal={toggleModal}
-					changeDifficulty={changeDifficulty}
-				/>
+				<Modal>
+					<HowToPlay
+						changeDifficulty={changeDifficulty}
+						toggleModal={toggleModal}
+					/>
+				</Modal>
+			)}
+			{isGameOver && (
+				<Modal>
+					<GameOver />
+				</Modal>
 			)}
 			<Header
 				score={score}
@@ -119,7 +133,7 @@ function App() {
 					onClickMovie={onClickMovie}
 				/>
 			)}
-		</>
+		</Wrapper>
 	);
 }
 
