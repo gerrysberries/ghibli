@@ -1,19 +1,36 @@
-const HowToPlay = ({changeDifficulty, toggle}) => {
+import styles from './HowToPlay.module.css';
+
+type HowToPlayProps = {
+	changeDifficulty: () => void;
+	toggle: () => void;
+};
+
+const HowToPlay = ({changeDifficulty, toggle}: HowToPlayProps) => {
 	return (
-		<>
-			<div onClick={changeDifficulty}>
-				<p>
-					<strong>How to Play</strong>: Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sequi dignissimos recusandae velit atque sit ut temporibus suscipit error sed, repellendus commodi quam. Dolores accusamus ratione fugit qui, possimus sint quae.
-				</p>
-				<p>
-					<strong>Choose your difficulty:</strong>
-				</p>
-				<button>Easy</button>
-				<button>Moderate</button>
-				<button>Hard</button>
+		<div className={styles.modal}>
+			<div>
+				<h2 className={styles.subheading}>How to Play</h2>
+				<p>Clicking on a movie will shuffle the entire list. Try and click every movie without selecting the same ones twice. Good luck!</p>
+				<div>
+					<h2 className={styles.subheading}>Choose your difficulty to begin</h2>
+					<div
+						onClick={changeDifficulty}
+						className={styles.btnContainer}
+					>
+						<button className={styles.btn}>Easy</button>
+						<button className={styles.btn}>Moderate</button>
+						<button className={styles.btn}>Hard</button>
+					</div>
+				</div>
 			</div>
-			<button onClick={toggle}>Close Modal</button>
-		</>
+
+			<button
+				className={styles.btn}
+				onClick={toggle}
+			>
+				Close
+			</button>
+		</div>
 	);
 };
 

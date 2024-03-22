@@ -8,7 +8,7 @@ const Header = ({score, bestScore}: {score: number; bestScore: number}) => {
 			</h1>
 			<div className={styles.score}>
 				<p>Score: {score}</p>
-				<p>Best score: {bestScore}</p>
+				<p>High score: {bestScore}</p>
 			</div>
 		</header>
 	);

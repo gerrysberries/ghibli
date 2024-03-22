@@ -1,0 +1,41 @@
+/* .modal * {
+	outline: 1px solid red;
+} */
+
+.modal {
+	height: 100%;
+	text-align: center;
+	font-size: 1.125rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.subheading {
+	font-weight: 400;
+	text-transform: uppercase;
+}
+
+.btnContainer {
+	display: flex;
+	gap: 16px;
+	justify-content: center;
+	align-items: center;
+}
+
+.btn {
+	text-transform: uppercase;
+	color: black;
+	background-color: white;
+	border: none;
+	outline: 1px solid black;
+	padding: 8px 16px;
+	width: fit-content;
+}
+
+.btn:hover {
+	color: white;
+	background: black;
+	outline: 1px solid white;
+}

@@ -12,7 +12,7 @@ import GameOver from './components/GameOver/GameOver';
 function App() {
 	const [score, setScore] = React.useState(0);
 	const [bestScore, setBestScore] = React.useState(0);
-	const [difficulty, setDifficulty] = React.useState('Easy');
+	const [difficulty, setDifficulty] = React.useState('easy');
 	const [allMovies, setAllMovies] = React.useState([]);
 	const [visibleMovies, setVisibleMovies] = React.useState([]);
 	const [clickedMovies, setClickedMovies] = React.useState([]);
@@ -37,32 +37,62 @@ function App() {
 		}
 
 		fetchMovies();
+		// init();
 	}, []);
+
+	return (
+		<Wrapper>
+			{showInstructions && (
+				<Modal toggle={toggleInstructions}>
+					<HowToPlay
+						changeDifficulty={changeDifficulty}
+						toggle={toggleInstructions}
+					/>
+				</Modal>
+			)}
+			{showGameOver && (
+				<Modal toggle={restartGame}>
+					<GameOver
+						gameStatus={gameStatus}
+						score={score}
+						restartGame={restartGame}
+					/>
+				</Modal>
+			)}
+			<Header
+				score={score}
+				bestScore={bestScore}
+			/>
+			<button onClick={toggleInstructions}>How to play</button>
+			<button onClick={restartGame}>Restart Game</button>
+			<button onClick={() => setBestScore(0)}>Reset High Score</button>
+			{difficulty && (
+				<Cards
+					movies={visibleMovies}
+					onClickMovie={onClickMovie}
+				/>
+			)}
+		</Wrapper>
+	);
 
 	function changeDifficulty(e): void {
 		if (e.target.tagName !== 'BUTTON') return;
+		console.log(e.target);
 
-		const val: string = e.target.innerText;
+		const val: string = e.target.innerText.toLowerCase();
 		setDifficulty(val);
 		let nextMovies = [...shuffleMovies(allMovies)];
 
-		if (val === 'Easy') {
+		if (val === 'easy') {
 			nextMovies = nextMovies.slice(0, 5);
-		} else if (val === 'Moderate') {
+		} else if (val === 'moderate') {
 			nextMovies = nextMovies.slice(0, 10);
-		} else if (val === 'Hard') {
+		} else if (val === 'hard') {
 			nextMovies = nextMovies.slice(0, 20);
 		}
 
 		setVisibleMovies(nextMovies);
 		toggleInstructions();
-	}
-
-	function getNewMovies() {
-		let nextMovies = [...shuffleMovies(allMovies)];
-
-		nextMovies = nextMovies.slice(0, visibleMovies.length);
-		setVisibleMovies(nextMovies);
 	}
 
 	function onClickMovie(id: string): void {
@@ -100,46 +130,22 @@ function App() {
 
 	function restartGame() {
 		if (score > bestScore) setBestScore(score);
-
 		showGameOver && toggleGameOver();
+		getNewMovies();
 		setClickedMovies([]);
 		setScore(0);
 	}
 
-	return (
-		<Wrapper>
-			{showInstructions && (
-				<Modal toggle={toggleInstructions}>
-					<HowToPlay
-						changeDifficulty={changeDifficulty}
-						toggle={toggleInstructions}
-					/>
-				</Modal>
-			)}
-			{showGameOver && (
-				<Modal toggle={restartGame}>
-					<GameOver
-						gameStatus={gameStatus}
-						score={score}
-						restartGame={restartGame}
-					/>
-				</Modal>
-			)}
-			<Header
-				score={score}
-				bestScore={bestScore}
-			/>
-			<button onClick={toggleInstructions}>How to play</button>
-			<button onClick={restartGame}>Restart Game</button>
-			<button onClick={() => setBestScore(0)}>Reset High Score</button>
-			{difficulty && (
-				<Cards
-					movies={visibleMovies}
-					onClickMovie={onClickMovie}
-				/>
-			)}
-		</Wrapper>
-	);
+	function getNewMovies() {
+		let nextMovies = [...shuffleMovies(allMovies)];
+		nextMovies = nextMovies.slice(0, visibleMovies.length);
+		setVisibleMovies(nextMovies);
+	}
+
+	// function init() {
+	// 	const defaultMovies = [...allMovies].slice(0, 5);
+	// 	setVisibleMovies(defaultMovies);
+	// }
 }
 
 export default App;

@@ -1,33 +1,33 @@
-const GameOver = ({gameStatus, score, restartGame}: {gameStatus: string; score: number}) => {
-	return gameStatus === 'won' ? (
-		<Win
-			score={score}
-			restartGame={restartGame}
-		/>
-	) : (
-		<Loss
-			score={score}
-			restartGame={restartGame}
-		/>
-	);
+type GameOverProps = {
+	gameStatus: 'won' | 'lost';
+	score: number;
+	restartGame: () => void;
 };
 
-const Win = ({score, restartGame}) => {
+const GameOver = ({gameStatus, score, restartGame}: GameOverProps) => {
 	return (
 		<div>
-			<p>Congratulations, you win!</p>
-			<p>Score: {score}</p>
+			{gameStatus === 'won' ? <Win score={score} /> : <Loss score={score} />}
 			<button onClick={restartGame}>Restart Game</button>
+			<button onClick={restartGame}>Change Difficulty</button>
 		</div>
 	);
 };
 
-const Loss = ({score, restartGame}) => {
+const Win = ({score}: {score: number}) => {
+	return (
+		<div>
+			<p>Congratulations, you win!</p>
+			<p>Score: {score}</p>
+		</div>
+	);
+};
+
+const Loss = ({score}: {score: number}) => {
 	return (
 		<div>
 			<p>Sorry, you lose!</p>
 			<p>Score: {score}</p>
-			<button onClick={restartGame}>Restart Game</button>
 		</div>
 	);
 };
