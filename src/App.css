@@ -62,3 +62,19 @@ h6 {
 #__next {
 	isolation: isolate;
 }
+
+.btn {
+	text-transform: uppercase;
+	color: black;
+	background-color: white;
+	border: none;
+	outline: 1px solid black;
+	padding: 8px 16px;
+	width: fit-content;
+}
+
+.btn:hover {
+	color: white;
+	background: black;
+	outline: 1px solid white;
+}

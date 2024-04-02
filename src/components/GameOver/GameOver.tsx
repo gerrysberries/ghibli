@@ -1,3 +1,5 @@
+import styles from './GameOver.module.css';
+
 type GameOverProps = {
 	gameStatus: 'won' | 'lost';
 	score: number;
@@ -8,8 +10,18 @@ const GameOver = ({gameStatus, score, restartGame}: GameOverProps) => {
 	return (
 		<div>
 			{gameStatus === 'won' ? <Win score={score} /> : <Loss score={score} />}
-			<button onClick={restartGame}>Restart Game</button>
-			<button onClick={restartGame}>Change Difficulty</button>
+			<button
+				className={styles.btn}
+				onClick={restartGame}
+			>
+				Restart Game
+			</button>
+			<button
+				className={styles.btn}
+				onClick={restartGame}
+			>
+				Change Difficulty
+			</button>
 		</div>
 	);
 };

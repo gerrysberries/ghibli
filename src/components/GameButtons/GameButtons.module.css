@@ -1,3 +1,9 @@
+.btnsContainer {
+	display: flex;
+	justify-content: center;
+	gap: 16px;
+}
+
 .btn {
 	text-transform: uppercase;
 	color: black;

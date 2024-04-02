@@ -8,6 +8,7 @@ import Modal from './components/Modal/Modal';
 import Wrapper from './components/Wrapper/Wrapper';
 import HowToPlay from './components/HowToPlay/HowToPlay';
 import GameOver from './components/GameOver/GameOver';
+import GameButtons from './components/GameButtons/GameButtons';
 
 function App() {
 	const [score, setScore] = React.useState(0);
@@ -63,9 +64,11 @@ function App() {
 				score={score}
 				bestScore={bestScore}
 			/>
-			<button onClick={toggleInstructions}>How to play</button>
-			<button onClick={restartGame}>Restart Game</button>
-			<button onClick={() => setBestScore(0)}>Reset High Score</button>
+			<GameButtons
+				toggleInstructions={toggleInstructions}
+				restartGame={restartGame}
+				handleResetBest={handleResetBest}
+			/>
 			{difficulty && (
 				<Cards
 					movies={visibleMovies}
@@ -142,10 +145,9 @@ function App() {
 		setVisibleMovies(nextMovies);
 	}
 
-	// function init() {
-	// 	const defaultMovies = [...allMovies].slice(0, 5);
-	// 	setVisibleMovies(defaultMovies);
-	// }
+	function handleResetBest() {
+		setBestScore(0);
+	}
 }
 
 export default App;

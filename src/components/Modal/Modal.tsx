@@ -4,6 +4,8 @@ import {RemoveScroll} from 'react-remove-scroll';
 import styles from './Modal.module.css';
 
 const Modal = ({toggle, children}) => {
+	console.log(styles);
+
 	return (
 		<RemoveScroll>
 			<FocusLock returnFocus={true}>
